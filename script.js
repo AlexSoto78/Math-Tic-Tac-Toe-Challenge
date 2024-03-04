@@ -2,7 +2,7 @@ let board = document.getElementById('board');
 let answeredWithinTimeLimit = true;
 let currentPlayer = "Player 1";
 let currentMathQuestion;
-
+let winner = false;
 function changeBoardColor() {
     let boardColor = document.getElementById('board-color')
     board.style.backgroundColor = boardColor.value;
@@ -58,6 +58,7 @@ function startTimer(durationInSeconds) {
     }
 
     function countdown() {
+        let endMessage = document.getElementById('lost');
         if (durationInSeconds >= 0) {
             updateTimer(durationInSeconds);
             durationInSeconds--;
@@ -65,12 +66,24 @@ function startTimer(durationInSeconds) {
             clearInterval(timerInterval);
             timerDisplay.textContent = 'Time Expired!';
             answeredWithinTimeLimit = false;
-            switchPlayer();
+            
         }
     }
 
     countdown();
     timerInterval = setInterval(countdown, 1000);
+}
+
+function mainMenu() {
+    const menu = document.getElementsByClassName('main-menu')[0];
+    menu.style.display = 'flex';
+    const board = document.getElementsByClassName('container')[0];
+    board.style.display = 'none';
+    let timer = document.getElementById('timer');
+    timer.style.display = 'none'; 
+
+    endMessage.innerHTML = "";
+
 }
 
 function startGame() {
@@ -82,20 +95,20 @@ function startGame() {
     board.style.display = 'flex';
     timer.style.display = 'flex';
 
-    const timerDuration = 30; // Set the time limit for each question (in seconds)
+    const timerDuration = 30; 
     answeredWithinTimeLimit = true;
     startTimer(timerDuration);
-
     logic();
 }
 
-// ------------Math problem-----------
-let mathQ = ['What is 1 + 1?', 'What is 2 + 2?', 'What is 3 * 3?'];
-let mathA = ['2', '4', '9'];
 
 function logic() {
-    currentMathQuestion = getRandom(mathQ, mathA);
+    // ------------Math problem-----------
+    let mathQ = ['What is 1 + 1?', 'What is 2 + 2?', 'What is 3 * 3?'];
+    let mathA = ['2', '4', '9'];
 
+    currentMathQuestion = getRandom(mathQ, mathA);
+    // math questions display div
     let title = document.getElementById('math-problem-1');
     let title2 = document.getElementById('math-problem-2');
 
@@ -106,12 +119,15 @@ function logic() {
     if (currentPlayer === "Player 1") {
         // display math problem for player 1
         title.innerHTML = currentMathQuestion[0];
+        form1.style.display = 'flex';
+        title.style.display = 'flex';
+        // hide math problem for player 2
         title2.style.display = 'none';
         form2.style.display = 'none';
     } else {
         title2.innerHTML = currentMathQuestion[0];
-        form2.style.display = 'block';
-        title2.style.display = 'block';
+        form2.style.display = 'flex';
+        title2.style.display = 'flex';
 
         form1.style.display = 'none';
         title.style.display = 'none';
@@ -130,11 +146,9 @@ function checkAnswer(player) {
         } else if (currentPlayer === "Player 2") {
             enableCellClick();
         }
-
     } else {
         alert('Incorrect! Turn skipped.');
         switchPlayer();
-        startTimer(5); // Start the timer for the next turn
     }
 }
 
@@ -157,6 +171,7 @@ function handleCellClick(event) {
         cell.innerHTML = currentPlayer === "Player 1" ? 'X' : 'O';
         disableCellClick();
         switchPlayer();
+        checkWinner();
     }
 }
 
@@ -167,11 +182,78 @@ function switchPlayer() {
     }else{
         logic();
     }
+    checkWinner();
 }
 
 function disableCellClick() {
     let cells = document.getElementsByClassName('cell');
     for (let i = 0; i < cells.length; i++) {
         cells[i].removeEventListener('click', handleCellClick);
+    }
+}
+function checkWinner() {
+    const cells = document.getElementsByClassName('cell');
+    const boardState = Array.from(cells).map(cell => cell.innerHTML.trim());
+
+    // Check rows
+    for (let i = 0; i < 3; i++) {
+        if (
+            boardState[i * 3] === boardState[i * 3 + 1] &&
+            boardState[i * 3] === boardState[i * 3 + 2] &&
+            boardState[i * 3] !== ''
+        ) {
+            alert(`${currentPlayer} wins!`);
+            winner = true;
+            resetGame();
+            return;
+        }
+    }
+
+    // Check columns
+    for (let i = 0; i < 3; i++) {
+        if (
+            boardState[i] === boardState[i + 3] &&
+            boardState[i] === boardState[i + 6] &&
+            boardState[i] !== ''
+        ) {
+            alert(`${currentPlayer} wins!`);
+            winner = true;
+            resetGame();
+            return;
+        }
+    }
+
+    // Check diagonals
+    if (
+        (boardState[0] === boardState[4] && boardState[0] === boardState[8] && boardState[0] !== '') ||
+        (boardState[2] === boardState[4] && boardState[2] === boardState[6] && boardState[2] !== '')
+    ) {
+        alert(`${currentPlayer} wins!`);
+        winner = true;
+        resetGame();
+        return;
+    }
+
+    // Check for a tie
+    if (!boardState.includes('')) {
+        alert('It\'s a tie!');
+        resetGame();
+        return;
+    }
+
+    function resetGame() {
+        const cells = document.getElementsByClassName('cell');
+        
+        // Clear the board
+        Array.from(cells).forEach(cell => {
+            cell.innerHTML = '';
+        });
+    
+        // Reset game state
+        currentPlayer = 'Player 1';
+        answeredWithinTimeLimit = true;
+    
+        // Start a new round
+        mainMenu();
     }
 }

@@ -113,3 +113,9 @@ footer {
     align-items: center;
     height: 40vh; /* Set height to 100% of the viewport height */
     }
+.restart{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+}
