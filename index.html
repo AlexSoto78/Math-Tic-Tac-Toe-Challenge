@@ -62,7 +62,7 @@
         </select>
     </div>
     <h1 class="title"  onclick="resetAndStartNewGame()">Tic-Tac-Toe</h1>
-    <h8 class = "identifier">&#8593; Click me to restart &#8593;</h8>
+    <h8 class = "identifier">&#8593; Click me to start/restart &#8593;</h8>
 
     <div class="main-menu">
         <div class="contents">
@@ -73,14 +73,14 @@
             </p>
     
             <p>
-                The game alternates turns between "Player 1" and "Player 2". To make a move, correctly solve the presented math problem. The game will check your answer within a time limit. If you succeed, you can make your move; otherwise, your turn is forfeited.
+                The game alternates turns between "Player 1" and "Player 2". To make a move, correctly solve the presented math problem. If you succeed, you can make your move; otherwise, your turn is forfeited.
             </p>
     
             <p>
                 Winning conditions involve achieving a row, column, or diagonal of your symbol ('X' or 'O'). If you win, a winner alert will be displayed, and the game will reset. If all cells are filled, and no winner is found, the game is declared a tie, prompting a tie alert and a reset.
             </p>
             <div class="start-button-container">
-                <button class="btn-1" onclick="startGame()">Start Game</button>
+                <button class="btn-1" onclick="resetAndStartNewGame()">Start Game</button>
             </div>
         </div>
     </div>
