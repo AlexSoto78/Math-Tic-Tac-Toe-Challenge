@@ -3,6 +3,9 @@ let answeredWithinTimeLimit = true;
 let currentPlayer = "Player 1";
 let currentMathQuestion;
 let winner = false;
+let timerInterval;
+let player = "";
+
 function changeBoardColor() {
     let boardColor = document.getElementById('board-color')
     board.style.backgroundColor = boardColor.value;
@@ -66,7 +69,14 @@ function startTimer(durationInSeconds) {
             clearInterval(timerInterval);
             timerDisplay.textContent = 'Time Expired!';
             answeredWithinTimeLimit = false;
-            
+            if(answeredWithinTimeLimit === false && winner === false){
+                Swal.fire({
+                    title: 'Time Expired!No winner found.',
+                    text: 'Restart game and try again.',
+                    icon: 'error',
+                    confirmButtonText: 'Restart Game',
+                }).then(resetAndStartNewGame);
+            }
         }
     }
 
@@ -81,15 +91,14 @@ function mainMenu() {
     board.style.display = 'none';
     let timer = document.getElementById('timer');
     timer.style.display = 'none'; 
-
-    endMessage.innerHTML = "";
-
 }
 
 function startGame() {
     const menu = document.getElementsByClassName('main-menu')[0];
     const board = document.getElementsByClassName('container')[0];
     let timer = document.getElementById('timer');
+
+    clearInterval(timerInterval);
 
     menu.style.display = 'none';
     board.style.display = 'flex';
@@ -112,6 +121,9 @@ function logic() {
     let title = document.getElementById('math-problem-1');
     let title2 = document.getElementById('math-problem-2');
 
+    // buttons
+    let submit1 = document.getElementById('submit-1');
+    let submit2 = document.getElementById('submit-2');
     // forms
     let form1 = document.getElementById('form-1');
     let form2 = document.getElementById('form-2');
@@ -121,16 +133,22 @@ function logic() {
         title.innerHTML = currentMathQuestion[0];
         form1.style.display = 'flex';
         title.style.display = 'flex';
+        submit1.style.display = 'flex';
+
         // hide math problem for player 2
         title2.style.display = 'none';
         form2.style.display = 'none';
+        submit2.style.display = 'none';
     } else {
         title2.innerHTML = currentMathQuestion[0];
+        submit2.style.display = 'flex';
         form2.style.display = 'flex';
         title2.style.display = 'flex';
 
         form1.style.display = 'none';
         title.style.display = 'none';
+        submit1.style.display = 'none';
+
     }
 }
 
@@ -139,16 +157,23 @@ function checkAnswer(player) {
     let answer = currentMathQuestion[1];
 
     if (submission === answer && answeredWithinTimeLimit) {
-        alert('Correct! You may take your turn now.');
-
-        if (currentPlayer === "Player 1") {
-            enableCellClick();
-        } else if (currentPlayer === "Player 2") {
-            enableCellClick();
-        }
+        Swal.fire({
+            title: 'Correct!',
+            text: 'You may take your turn now.',
+            icon: 'success',
+            confirmButtonText: 'OK',
+        }).then(() => {
+            if (currentPlayer === "Player 1" || currentPlayer === "Player 2") {
+                enableCellClick();
+            }
+        });
     } else {
-        alert('Incorrect! Turn skipped.');
-        switchPlayer();
+        Swal.fire({
+            title: 'Incorrect!',
+            text: 'Turn skipped.',
+            icon: 'error',
+            confirmButtonText: 'OK',
+        }).then(switchPlayer);
     }
 }
 
@@ -167,8 +192,10 @@ function enableCellClick() {
 function handleCellClick(event) {
     const cell = event.target;
 
-    if (cell.innerHTML === '') {
+    // Check if the cell is defined and has the innerHTML property
+    if (cell && cell.innerHTML === '') {
         cell.innerHTML = currentPlayer === "Player 1" ? 'X' : 'O';
+        player = currentPlayer;
         disableCellClick();
         switchPlayer();
         checkWinner();
@@ -176,13 +203,12 @@ function handleCellClick(event) {
 }
 
 function switchPlayer() {
-    currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
-    if (currentPlayer === "Player 1") {
-        logic();
-    }else{
+    checkWinner(); // Check for a winner before switching players
+
+    if (!winner) {
+        currentPlayer = currentPlayer === "Player 1" ? "Player 2" : "Player 1";
         logic();
     }
-    checkWinner();
 }
 
 function disableCellClick() {
@@ -202,9 +228,8 @@ function checkWinner() {
             boardState[i * 3] === boardState[i * 3 + 2] &&
             boardState[i * 3] !== ''
         ) {
-            alert(`${currentPlayer} wins!`);
+            showWinnerAlert(`${player} wins!`);
             winner = true;
-            resetGame();
             return;
         }
     }
@@ -216,9 +241,8 @@ function checkWinner() {
             boardState[i] === boardState[i + 6] &&
             boardState[i] !== ''
         ) {
-            alert(`${currentPlayer} wins!`);
+            showWinnerAlert(`${player} wins!`);
             winner = true;
-            resetGame();
             return;
         }
     }
@@ -228,32 +252,61 @@ function checkWinner() {
         (boardState[0] === boardState[4] && boardState[0] === boardState[8] && boardState[0] !== '') ||
         (boardState[2] === boardState[4] && boardState[2] === boardState[6] && boardState[2] !== '')
     ) {
-        alert(`${currentPlayer} wins!`);
+        showWinnerAlert(`${player} wins!`);
         winner = true;
-        resetGame();
         return;
     }
 
     // Check for a tie
     if (!boardState.includes('')) {
-        alert('It\'s a tie!');
-        resetGame();
+        showTieAlert('It\'s a tie!');
+        winner = false;
         return;
     }
 
-    function resetGame() {
-        const cells = document.getElementsByClassName('cell');
-        
-        // Clear the board
-        Array.from(cells).forEach(cell => {
-            cell.innerHTML = '';
-        });
-    
-        // Reset game state
-        currentPlayer = 'Player 1';
-        answeredWithinTimeLimit = true;
-    
-        // Start a new round
-        mainMenu();
+    function showWinnerAlert(message) {
+        Swal.fire({
+            title: 'Winner!',
+            text: message,
+            icon: 'success',
+            confirmButtonText: 'OK',
+            customClass: {
+                popup: 'winner-popup',
+            },
+        }).then(resetGame);
     }
+
+    function showTieAlert(message) {
+        Swal.fire({
+            title: 'It\'s a Tie!',
+            text: message,
+            icon: 'info',
+            confirmButtonText: 'OK',
+        }).then(resetGame);
+    }
+
+}
+function resetGame() {
+    const cells = document.getElementsByClassName('cell');
+
+    // Clear the board
+    Array.from(cells).forEach(cell => {
+        cell.innerHTML = '';
+    });
+
+    // Reset game state
+    currentPlayer = 'Player 1';
+    answeredWithinTimeLimit = true;
+
+    // Start a new round
+    mainMenu();
+}
+
+// Add an event listener to the title to call the resetGame function
+document.querySelector('.title').addEventListener('click', resetAndStartNewGame);
+
+function resetAndStartNewGame() {
+    winner = false;
+    resetGame();
+    startGame(); // Call the startGame function to initiate a new game
 }

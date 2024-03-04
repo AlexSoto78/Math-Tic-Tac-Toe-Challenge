@@ -48,6 +48,18 @@ body {
     align-items: center;
     font-size: 60px;
     font-family: 'title';
+    cursor: pointer;
+}
+.identifier{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.title:hover{
+    color: #FFAE42;
+}
+.contents p {
+    text-align: left;
 }
 footer {
     position: fixed;
@@ -86,11 +98,13 @@ footer {
   .player-1,
   .player-2 {
     text-align: center;
+    align-items: center;
+    margin: 0 20px;
   }
-  .player-1{
+  .player-1 h1{
     color: rgba(240, 140, 58, 0.856);
   }
-  .player-2{
+  .player-2 h1{
     color: rgba(58, 158, 240, 0.856);
   }
   .time-div{
@@ -106,6 +120,7 @@ footer {
     justify-content: center;
     align-items: center;
     text-align: center;
+    width: 65%;
   }
   .main-menu {
     display: flex;
@@ -119,3 +134,34 @@ footer {
     align-items: center;
     margin: 20px 0;
 }
+.submit-button-container{
+    margin-top: 15px;
+}
+.math-problem{
+    font-size: 30px;
+    font-family: 'title';
+}
+.btn-1, .btn-2, .btn-3 {
+    background-color: #FFAE42;
+    border-radius:50px;
+    width: 125px;
+    height:50px;
+    border: none;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 400;
+}
+.btn-1:hover, .btn-2:hover, .btn-3:hover{
+    background-color: #FFC982;
+}
+.btn-4{
+    background-color: #da6642;
+    border-radius:50px;
+    width: 125px;
+    height:50px;
+    border: none;
+    color: white;
+    text-transform: uppercase;
+    font-weight: 600;
+}
+
