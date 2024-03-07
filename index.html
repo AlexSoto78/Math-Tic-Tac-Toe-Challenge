@@ -27,7 +27,6 @@
             </div>
         </div>
     </nav>
-    <div class="bg"></div>
 
     <!-- options -->
     <div class="options">
@@ -91,13 +90,7 @@
     <div class="container">
         <div class="player-1">
             <h1> Player 1</h1>
-            <div class="math-problem" id="math-problem-1"></div>
-            <div id="form-1">
-                <input type="text" id="answer-1" placeholder="Enter Answer"> <br>
-            </div>
-            <div class="submit-button-container" id="submit-1">
-                <button class="btn-2" onclick="checkAnswer(1)">Submit</button>
-            </div>
+            <div class="turn-message" id="player-1-turn-message">Take your turn!</div>
         </div>
         <div class="board" id="board">
             <div class="cell" id="cell-1" onclick="handleCellClick(1)"></div>
@@ -113,14 +106,7 @@
         </div>
         <div class="player-2">
             <h1> Player 2</h1>
-            <div class="math-problem" id="math-problem-2">
-            </div>
-            <div id="form-2">
-                <input type="text" id="answer-2" placeholder="Enter Answer">
-            </div>
-            <div class="submit-button-container" id="submit-2">
-                <button class="btn-3" onclick="checkAnswer(2)">Submit</button>
-            </div>    
+            <div class="turn-message" id="player-2-turn-message">Take your turn!</div>
         </div>
     </div>
 
