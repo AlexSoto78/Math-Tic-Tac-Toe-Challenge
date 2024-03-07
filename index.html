@@ -11,11 +11,13 @@
 
 </head>
 <body>
+    <div class="background-image"></div>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid topnav">
-            <a class="navbar-brand" href="#">Elizabeth Soto</a>
+            <a class="navbar-brand" id="logo" href="index.html">Elizabeth Soto</a>
             <div class="login ms-auto">
-                <a class="" href="index copy.html">Log in</a>
+                <a href="index copy.html">Log in</a>
             </div>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,7 +31,7 @@
 
     <!-- options -->
     <div class="options">
-        <label for="board-color">Choose a Board Color:</label>
+        <label for="board-color" style="font-family: 'title';">Choose a Board Color:</label>
         <select name="board-color" id="board-color" onchange="changeBoardColor()">
             <option value="white">----</option>
             <option value="red">Red</option>
@@ -37,7 +39,7 @@
             <option value="pink">Pink</option>
             <option value="orange">Orange</option>
         </select>
-        <label for="frame-color">Choose a Frame Color:</label>
+        <label for="frame-color" style="font-family: 'title';">Choose a Frame Color:</label>
         <select name="frame-color" id="frame-color" onchange="changeFrameColor()">
             <option value="white">----</option>
             <option value="red">Red</option>
@@ -45,7 +47,7 @@
             <option value="pink">Pink</option>
             <option value="orange">Orange</option>
         </select>
-        <label for="x-styling">Choose X Styling:</label>
+        <label for="x-styling"  style="font-family: 'title';">Choose X Styling:</label>
         <select name="x-styling" id="x-styling" onchange="changeXStyling()">
             <option value="black">----</option>
             <option value="red">Red</option>
@@ -53,7 +55,7 @@
             <option value="pink">Pink</option>
             <option value="orange">Orange</option>
         </select>
-        <label for="o-styling">Choose O Styling:</label>
+        <label for="o-styling"  style="font-family: 'title';">Choose O Styling:</label>
         <select name="o-styling" id="o" onchange="changeOStyling()">
             <option value="black">----</option>
             <option value="red">Red</option>
@@ -69,15 +71,15 @@
         <div class="contents">
             <h1 id="game-over"></h1>
             <h1 style="color:white">&mdash; Rules &mdash;</h1>
-            <p>
+            <p class="rules">
                 Welcome to Tic Tac Toe! Before making your move, you must solve a random math problem. Your task is to answer correctly, as an incorrect response will result in your turn being skipped. If you ever want to restart the game, simply click on the 'TIC TAC TOE' header.
             </p>
     
-            <p>
+            <p class="rules">
                 The game alternates turns between "Player 1" and "Player 2". To make a move, correctly solve the presented math problem. If you succeed, you can make your move; otherwise, your turn is forfeited.
             </p>
     
-            <p>
+            <p class="rules">
                 Winning conditions involve achieving a row, column, or diagonal of your symbol ('X' or 'O'). If you win, a winner alert will be displayed, and the game will reset. If all cells are filled, and no winner is found, the game is declared a tie, prompting a tie alert and a reset.
             </p>
             <div class="start-button-container">
@@ -85,6 +87,7 @@
             </div>
         </div>
     </div>
+
     <div class="container">
         <div class="player-1">
             <h1> Player 1</h1>

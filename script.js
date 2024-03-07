@@ -66,8 +66,8 @@ function startGame() {
 
 function logic() {
     // ------------Math problem-----------
-    let mathQ = ['What is 1 + 1?', 'What is 2 + 2?', 'What is 3 * 3?'];
-    let mathA = ['2', '4', '9'];
+    let mathQ = ['What is 1 + 1?', 'What is 2 + 2?', 'What is 3 - 3?'];
+    let mathA = ['2', '4', '0'];
 
     currentMathQuestion = getRandom(mathQ, mathA);
     let title = document.getElementById('math-problem-1');
